@@ -1,35 +1,58 @@
+.chatContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.chatContent h1 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 .chats {
-    max-width: 700px;
-    overflow-y: scroll;
-    overflow: hidden;
-    padding: 8rem;
+  width: 100%;
 }
 
 .userDiv {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 0.9rem;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
 }
 
-
 .gptDiv {
-    text-align: left;
-    font-size: 0.9rem;
+  text-align: left;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
 }
 
 .userMessage {
-    background-color: #323232;
-    padding: 10px 20px;
-    border-radius: 14px;
-    margin-left: 15rem;
-    max-width: 500px;
-    width: fit-content;
+  background-color: #323232;
+  padding: 10px 20px;
+  border-radius: 14px;
+  max-width: 100%;
+  width: fit-content;
 }
 
 .hljs {
-    border-radius: 14px !important;
+  border-radius: 14px !important;
 }
 
 pre {
-    white-space: pre-wrap;
+  white-space: pre-wrap;
+  background: #323232;
+  padding: 15px;
+  border-radius: 14px;
+  overflow-x: auto;
+}
+
+code {
+  background: #323232;
+  padding: 2px 5px;
+  border-radius: 4px;
 }

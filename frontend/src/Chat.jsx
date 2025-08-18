@@ -11,18 +11,16 @@ function Chat() {
 
   useEffect(() => {
     if (reply === null) {
-      setLatestReply(null); //prevchat load
+      setLatestReply(null);
       return;
     }
 
     if (!prevChats?.length) return;
 
-    const content = reply.split(" "); //individual words
-
+    const content = reply.split(" ");
     let idx = 0;
     const interval = setInterval(() => {
       setLatestReply(content.slice(0, idx + 1).join(" "));
-
       idx++;
       if (idx >= content.length) clearInterval(interval);
     }, 40);
@@ -31,7 +29,7 @@ function Chat() {
   }, [prevChats, reply]);
 
   return (
-    <>
+    <div className="chatContent">
       {newChat && <h1>What's on your mind today?</h1>}
       <div className="chats">
         {prevChats?.slice(0, -1).map((chat, idx) => (
@@ -67,7 +65,7 @@ function Chat() {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
