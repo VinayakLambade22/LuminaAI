@@ -1,5 +1,5 @@
 import "./Sidebar.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 
@@ -16,6 +16,12 @@ function Sidebar() {
     getAllThreads,
   } = useContext(MyContext);
 
+  const [isOpen, setIsOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsOpen((prev) => !prev);
+  };
+
   const createNewChat = () => {
     setNewChat(true);
     setPrompt("");
@@ -26,13 +32,11 @@ function Sidebar() {
 
   const changeThread = async (newThreadId) => {
     setCurrThreadId(newThreadId);
-
     try {
       const response = await fetch(
         `http://localhost:8080/api/thread/${newThreadId}`
       );
       const res = await response.json();
-      console.log(res);
       setPrevChats(res);
       setNewChat(false);
       setReply(null);
@@ -43,12 +47,9 @@ function Sidebar() {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/thread/${threadId}`,
-        { method: "DELETE" }
-      );
-      const res = await response.json();
-      console.log(res);
+      await fetch(`http://localhost:8080/api/thread/${threadId}`, {
+        method: "DELETE",
+      });
 
       setAllThreads((prev) =>
         prev.filter((thread) => thread.threadId !== threadId)
@@ -65,14 +66,10 @@ function Sidebar() {
   };
 
   return (
-    <section className="sidebar">
+    <section className={`sidebar ${isOpen ? "" : "collapsed"}`}>
       <div className="logoDiv">
-        <img
-          src="src/assets/blacklogo.png"
-          alt="gpt logo"
-          className="logo"
-        ></img>
-        <span className="logoSidebar">
+        <img src="src/assets/blacklogo.png" alt="gpt logo" className="logo" />
+        <span className="logoSidebar" onClick={toggleSidebar}>
           <svg
             className="bi bi-layout-sidebar"
             fill="currentColor"
@@ -86,38 +83,50 @@ function Sidebar() {
         </span>
       </div>
 
-      <button className="newChat" onClick={createNewChat}>
-        <span className="newChatIcon">
-          <i className="fa-solid fa-pen-to-square"></i>
-        </span>
-        <span className="newChatText">New Chat</span>
-      </button>
+      {isOpen ? (
+        <>
+          <button className="newChat" onClick={createNewChat}>
+            <span className="newChatIcon">
+              <i className="fa-solid fa-pen-to-square"></i>
+            </span>
+            <span className="newChatText">New Chat</span>
+          </button>
 
-      <ul className="history">
-        <p className="historyTitle">Chats</p>
-        {allThreads?.map((thread, idx) => (
-          <li
-            key={idx}
-            onClick={() => changeThread(thread.threadId)}
-            className={thread.threadId === currThreadId ? "highlighted" : " "}
-          >
-            {thread.title.length > 40
-              ? thread.title.substring(0, 40) + "..."
-              : thread.title}
-            <i
-              className="fa-solid fa-trash"
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteThread(thread.threadId);
-              }}
-            ></i>
-          </li>
-        ))}
-      </ul>
+          <ul className="history">
+            <p className="historyTitle">Chats</p>
+            {allThreads?.map((thread, idx) => (
+              <li
+                key={idx}
+                onClick={() => changeThread(thread.threadId)}
+                className={
+                  thread.threadId === currThreadId ? "highlighted" : ""
+                }
+              >
+                {thread.title.length > 40
+                  ? thread.title.substring(0, 40) + "..."
+                  : thread.title}
+                <i
+                  className="fa-solid fa-trash"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteThread(thread.threadId);
+                  }}
+                ></i>
+              </li>
+            ))}
+          </ul>
 
-      <div className="sign">
-        <p>By LuminaAI &hearts;</p>
-      </div>
+          <div className="sign">
+            <p>By LuminaAI &hearts;</p>
+          </div>
+        </>
+      ) : (
+        <>
+          <button className="collapsedNewChat" onClick={createNewChat}>
+            <i className="fa-solid fa-pen-to-square"></i>
+          </button>
+        </>
+      )}
     </section>
   );
 }
