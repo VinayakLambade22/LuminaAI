@@ -1,5 +1,5 @@
 import "./Sidebar.css";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
 
@@ -13,26 +13,8 @@ function Sidebar() {
     setReply,
     setCurrThreadId,
     setPrevChats,
+    getAllThreads
   } = useContext(MyContext);
-
-  const getAllThreads = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/thread");
-      const res = await response.json();
-      const filteredData = res.map((thread) => ({
-        threadId: thread.threadId,
-        title: thread.title,
-      }));
-      //console.log(filteredData);
-      setAllThreads(filteredData);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getAllThreads();
-  }, [currThreadId]);
 
   const createNewChat = () => {
     setNewChat(true);
@@ -46,9 +28,7 @@ function Sidebar() {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/api/thread/${newThreadId}`
-      );
+      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
       const res = await response.json();
       console.log(res);
       setPrevChats(res);
@@ -68,7 +48,6 @@ function Sidebar() {
       const res = await response.json();
       console.log(res);
 
-      //updated threads re-render
       setAllThreads((prev) =>
         prev.filter((thread) => thread.threadId !== threadId)
       );
@@ -76,6 +55,8 @@ function Sidebar() {
       if (threadId === currThreadId) {
         createNewChat();
       }
+
+      getAllThreads();
     } catch (err) {
       console.log(err);
     }
@@ -98,14 +79,14 @@ function Sidebar() {
         {allThreads?.map((thread, idx) => (
           <li
             key={idx}
-            onClick={(e) => changeThread(thread.threadId)}
+            onClick={() => changeThread(thread.threadId)}
             className={thread.threadId === currThreadId ? "highlighted" : " "}
           >
-            {thread.title}
+            {thread.title.length > 40 ? thread.title.substring(0, 40) + "..." : thread.title}
             <i
               className="fa-solid fa-trash"
               onClick={(e) => {
-                e.stopPropagation(); //stop event bubbling
+                e.stopPropagation(); 
                 deleteThread(thread.threadId);
               }}
             ></i>
