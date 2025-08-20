@@ -7,7 +7,6 @@
   max-width: 700px;
   margin: 0 auto;
   padding: 0 1rem;
-  min-height: 60vh;
 }
 
 .chatContent h1 {
@@ -42,19 +41,21 @@
 }
 
 .hljs {
-  border-radius: 14px !important;
+  border-radius: 8px !important;
 }
 
 pre {
   white-space: pre-wrap;
-  background: #323232;
-  padding: 15px;
   border-radius: 14px;
-  overflow-x: auto;
+  /* overflow-x: auto; */
 }
 
 code {
-  background: #323232;
   padding: 2px 5px;
+  line-height: 1.4rem;
   border-radius: 4px;
+}
+
+p {
+  line-height: 1.4rem;
 }

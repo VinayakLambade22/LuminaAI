@@ -13,7 +13,7 @@ function Sidebar() {
     setReply,
     setCurrThreadId,
     setPrevChats,
-    getAllThreads
+    getAllThreads,
   } = useContext(MyContext);
 
   const createNewChat = () => {
@@ -28,7 +28,9 @@ function Sidebar() {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`);
+      const response = await fetch(
+        `http://localhost:8080/api/thread/${newThreadId}`
+      );
       const res = await response.json();
       console.log(res);
       setPrevChats(res);
@@ -64,29 +66,48 @@ function Sidebar() {
 
   return (
     <section className="sidebar">
-      <button onClick={createNewChat}>
+      <div className="logoDiv">
         <img
           src="src/assets/blacklogo.png"
           alt="gpt logo"
           className="logo"
         ></img>
-        <span>
+        <span className="logoSidebar">
+          <svg
+            className="bi bi-layout-sidebar"
+            fill="currentColor"
+            height="16"
+            viewBox="0 0 16 16"
+            width="16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H5zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2V2z" />
+          </svg>
+        </span>
+      </div>
+
+      <button className="newChat" onClick={createNewChat}>
+        <span className="newChatIcon">
           <i className="fa-solid fa-pen-to-square"></i>
         </span>
+        <span className="newChatText">New Chat</span>
       </button>
 
       <ul className="history">
+        <p className="historyTitle">Chats</p>
         {allThreads?.map((thread, idx) => (
           <li
             key={idx}
             onClick={() => changeThread(thread.threadId)}
             className={thread.threadId === currThreadId ? "highlighted" : " "}
           >
-            {thread.title.length > 40 ? thread.title.substring(0, 40) + "..." : thread.title}
+            {thread.title.length > 40
+              ? thread.title.substring(0, 40) + "..."
+              : thread.title}
             <i
               className="fa-solid fa-trash"
               onClick={(e) => {
-                e.stopPropagation(); 
+                e.stopPropagation();
                 deleteThread(thread.threadId);
               }}
             ></i>
