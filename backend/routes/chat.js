@@ -8,11 +8,30 @@ const router = express.Router();
 router.use(requireAuth);
 router.use(extractUserId);
 
+// //test
+// router.post("/test", async (req, res) => {
+//   try {
+//     const thread = new Thread({
+//       threadId: "abc",
+//       title: "Testing New Thread2",
+//     });
+
+//     const response = await thread.save();
+//     res.send(response);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ error: "Failed to save in DB" });
+//   }
+// });
+
+//Get all threads
 router.get("/thread", async (req, res) => {
   try {
     const threads = await Thread.find({ userId: req.userId })
       .sort({ updatedAt: -1 })
       .select("threadId title updatedAt");
+
+    //descending order of updatedAt...most recent data on top
 
     res.json(threads);
   } catch (err) {
@@ -27,7 +46,7 @@ router.get("/thread/:threadId", async (req, res) => {
   try {
     const thread = await Thread.findOne({
       threadId,
-      userId: req.userId, 
+      userId: req.userId,
     });
 
     if (!thread) {
@@ -49,7 +68,7 @@ router.delete("/thread/:threadId", async (req, res) => {
   try {
     const deletedThread = await Thread.findOneAndDelete({
       threadId,
-      userId: req.userId, 
+      userId: req.userId,
     });
 
     if (!deletedThread) {

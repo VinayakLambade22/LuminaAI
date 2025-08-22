@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #121212;
+  background: #242323;
 }
 
 .authModal {
@@ -20,10 +20,23 @@
 }
 
 .authLogo {
-  width: 70px;
-  height: 70px;
-  margin-bottom: 1rem;
-  filter: invert(1);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    #22d3ee 0%,
+    #10b981 50%,
+    #7c3aed 100%
+  );
+
+  margin: 0 auto 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.authLogo:hover {
+  box-shadow: 0 0 20px #198495;
+  transform: scale(0.9);
 }
 
 .authTitle {
@@ -87,3 +100,5 @@
   font-size: 0.9rem;
   margin: 0.4rem 0;
 }
+
+

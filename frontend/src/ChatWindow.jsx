@@ -89,9 +89,7 @@ function ChatWindow() {
           LuminaAI <i className="fa-solid fa-chevron-down"></i>
         </span>
         <div className="userSection">
-          <span className="userName">
-            {user?.firstName || user?.emailAddresses[0]?.emailAddress || 'User'}
-          </span>
+         
           <UserButton 
             afterSignOutUrl="/"
             appearance={{
@@ -100,8 +98,8 @@ function ChatWindow() {
                 userButtonPopoverCard: "userPopover",
               },
               variables: {
-                colorBackground: "#1a1a1a",
-                colorText: "#ffffff",
+                colorBackground: "#ffffff",
+                colorText: "#1a1a1a",
               }
             }}
           />
