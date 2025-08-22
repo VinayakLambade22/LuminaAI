@@ -3,6 +3,7 @@ import Chat from "./Chat.jsx";
 import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
+import { UserButton, useUser } from "@clerk/clerk-react";
 
 function ChatWindow() {
   const {
@@ -14,10 +15,13 @@ function ChatWindow() {
     setPrevChats,
     setNewChat,
     getAllThreads,
+    makeAuthenticatedRequest,
   } = useContext(MyContext);
+  
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const chatContainerRef = useRef(null);
+  const { user } = useUser();
 
   const getReply = async () => {
     if (!prompt.trim()) return;
@@ -25,12 +29,8 @@ function ChatWindow() {
     setLoading(true);
     setNewChat(false);
 
-    console.log("message ", prompt, " threadId ", currThreadId);
     const options = {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify({
         message: prompt,
         threadId: currThreadId,
@@ -38,16 +38,24 @@ function ChatWindow() {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/chat", options);
+      const response = await makeAuthenticatedRequest(
+        "http://localhost:8080/api/chat", 
+        options
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+      
       const res = await response.json();
-      console.log(res);
       setReply(res.reply);
-
       getAllThreads();
     } catch (err) {
-      console.log(err);
+      console.error("Error getting reply:", err);
+      // You might want to show an error message to the user here
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -74,35 +82,31 @@ function ChatWindow() {
     setPrompt("");
   }, [reply]);
 
-  const handleProfileClick = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className="chatWindow">
       <div className="navbar">
         <span>
           LuminaAI <i className="fa-solid fa-chevron-down"></i>
         </span>
-        <div className="userIconDiv" onClick={handleProfileClick}>
-          <span className="userIcon">
-            <i className="fa-solid fa-user"></i>
+        <div className="userSection">
+          <span className="userName">
+            {user?.firstName || user?.emailAddresses[0]?.emailAddress || 'User'}
           </span>
+          <UserButton 
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "userAvatar",
+                userButtonPopoverCard: "userPopover",
+              },
+              variables: {
+                colorBackground: "#1a1a1a",
+                colorText: "#ffffff",
+              }
+            }}
+          />
         </div>
       </div>
-      {isOpen && (
-        <div className="dropDown">
-          <div className="dropDownItem">
-            <i className="fa-solid fa-gear"></i> Settings
-          </div>
-          <div className="dropDownItem">
-            <i className="fa-solid fa-cloud-arrow-up"></i> Upgrade plan
-          </div>
-          <div className="dropDownItem">
-            <i className="fa-solid fa-arrow-right-from-bracket"></i> Log out
-          </div>
-        </div>
-      )}
 
       <div className="chatContainer" ref={chatContainerRef}>
         <Chat />
@@ -121,14 +125,18 @@ function ChatWindow() {
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             onKeyDown={(e) => (e.key === "Enter" ? getReply() : "")}
+            disabled={loading}
           />
-          <div id="submit" onClick={getReply}>
+          <div 
+            id="submit" 
+            onClick={getReply}
+            className={loading ? "disabled" : ""}
+          >
             <i className="fa-solid fa-paper-plane"></i>
           </div>
         </div>
         <p className="info">
-          LuminaAI can make mistakes. Check important info. See Cookie
-          Preferences.
+          LuminaAI can make mistakes. Check important info. Your chats are private to your account.
         </p>
       </div>
     </div>

@@ -1,0 +1,89 @@
+.authOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212;
+}
+
+.authModal {
+  background: rgba(26, 26, 26, 0.95);
+  color: white;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  width: 400px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+.authLogo {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 1rem;
+  filter: invert(1);
+}
+
+.authTitle {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.authSubtitle {
+  font-size: 1rem;
+  color: #aaa;
+  margin-bottom: 1.8rem;
+}
+
+.authButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.loginBtn {
+  background: white;
+  color: black;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.loginBtn:hover {
+  background: #e5e5e5;
+}
+
+.signupBtn {
+  background: #2d2d2d;
+  color: white;
+  font-weight: 600;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.signupBtn:hover {
+  background: #3a3a3a;
+}
+
+.authFooter {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+}
+
+.authFooter p {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  margin: 0.4rem 0;
+}

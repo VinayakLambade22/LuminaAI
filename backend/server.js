@@ -3,6 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import mongoose from "mongoose";
 import chatRoutes from "./routes/chat.js";
+import { ClerkExpressWithAuth } from "@clerk/clerk-sdk-node";
 
 const app = express();
 const PORT = 8080;
@@ -10,7 +11,11 @@ const PORT = 8080;
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", chatRoutes);
+if (!process.env.CLERK_SECRET_KEY) {
+  throw new Error("CLERK_SECRET_KEY is not set in environment variables");
+}
+
+app.use("/api", ClerkExpressWithAuth(), chatRoutes);
 
 app.listen(PORT, () => {
     console.log(`server running on ${PORT}`);

@@ -14,9 +14,11 @@ function Sidebar() {
     setCurrThreadId,
     setPrevChats,
     getAllThreads,
+    makeAuthenticatedRequest,
   } = useContext(MyContext);
 
   const [isOpen, setIsOpen] = useState(true);
+  const [loadingThread, setLoadingThread] = useState(null);
 
   const toggleSidebar = () => {
     setIsOpen((prev) => !prev);
@@ -31,25 +33,46 @@ function Sidebar() {
   };
 
   const changeThread = async (newThreadId) => {
+    setLoadingThread(newThreadId);
     setCurrThreadId(newThreadId);
+    
     try {
-      const response = await fetch(
+      const response = await makeAuthenticatedRequest(
         `http://localhost:8080/api/thread/${newThreadId}`
       );
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch thread');
+      }
+      
       const res = await response.json();
       setPrevChats(res);
       setNewChat(false);
       setReply(null);
     } catch (err) {
-      console.log(err);
+      console.error("Error loading thread:", err);
+      // Optionally show an error message to the user
+    } finally {
+      setLoadingThread(null);
     }
   };
 
-  const deleteThread = async (threadId) => {
+  const deleteThread = async (threadId, e) => {
+    e.stopPropagation();
+    
+    if (!confirm("Are you sure you want to delete this chat?")) {
+      return;
+    }
+
     try {
-      await fetch(`http://localhost:8080/api/thread/${threadId}`, {
-        method: "DELETE",
-      });
+      const response = await makeAuthenticatedRequest(
+        `http://localhost:8080/api/thread/${threadId}`,
+        { method: "DELETE" }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to delete thread');
+      }
 
       setAllThreads((prev) =>
         prev.filter((thread) => thread.threadId !== threadId)
@@ -61,7 +84,8 @@ function Sidebar() {
 
       getAllThreads();
     } catch (err) {
-      console.log(err);
+      console.error("Error deleting thread:", err);
+      // Optionally show an error message to the user
     }
   };
 
