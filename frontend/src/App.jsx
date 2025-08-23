@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { v1 as uuidv1 } from "uuid";
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import AuthPage from "./AuthPage.jsx";
+import { ThemeProvider } from "./ThemeContext.jsx";
 
 function App() {
   const [prompt, setPrompt] = useState("");
@@ -82,18 +83,20 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <SignedOut>
-        <AuthPage />
-      </SignedOut>
+    <ThemeProvider>
+      <div className="app">
+        <SignedOut>
+          <AuthPage />
+        </SignedOut>
 
-      <SignedIn>
-        <MyContext.Provider value={providerValues}>
-          <Sidebar />
-          <ChatWindow />
-        </MyContext.Provider>
-      </SignedIn>
-    </div>
+        <SignedIn>
+          <MyContext.Provider value={providerValues}>
+            <Sidebar />
+            <ChatWindow />
+          </MyContext.Provider>
+        </SignedIn>
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,13 +1,13 @@
 .sidebar {
-  background-color: #171717;
-   color: #ececec;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   height: 100vh;
   width: 320px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   overflow: hidden;
-  transition: width 0.3s ease;
+  transition: width 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar.collapsed {
@@ -20,27 +20,29 @@
   padding: 0.75rem 1rem;
   justify-content: space-between;
   margin-inline: 0.5rem;
-  
 }
 
 .logo {
   height: 25px;
   width: 25px;
-  background-color: #fff;
+  background-color: var(--text-primary);
   border-radius: 50%;
   object-fit: cover;
+  transition: background-color 0.3s ease;
 }
 
 .logoSidebar {
   cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, background-color 0.3s ease,
+    color 0.3s ease;
+  color: var(--text-primary);
 }
 
 .logoSidebar:hover {
   transform: scale(1.05);
-  background-color: #43282807;
+  background-color: var(--hover-color);
+  border-radius: 4px;
 }
-
 
 .newChat {
   display: flex;
@@ -51,12 +53,12 @@
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.2s ease-in-out;
-   color: #ececec;
+  transition: background 0.2s ease-in-out, color 0.3s ease;
+  color: var(--text-primary);
 }
 
 .newChat:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--hover-color);
 }
 
 .newChatIcon {
@@ -92,17 +94,20 @@
   margin: 6px auto;
   background: none;
   border: none;
-  color: #b4b4b4;
+  color: var(--text-secondary);
   font-size: 20px;
   padding: 10px;
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .collapsedNewChat:hover {
-  color: white;
+  color: var(--text-primary);
+  background-color: var(--hover-color);
+  border-radius: 4px;
 }
 
 .historyTitle {
@@ -110,7 +115,8 @@
   font-size: 0.85rem;
   letter-spacing: 0.5px;
   font-weight: 500;
-  color: #9ca3af;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
 }
 
 .history {
@@ -118,7 +124,7 @@
   padding-inline: 0.5rem;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #444 transparent;
+  scrollbar-color: var(--text-secondary) transparent;
   margin: 0;
   padding: 0;
 }
@@ -128,8 +134,9 @@
 }
 
 .history::-webkit-scrollbar-thumb {
-  background: #444;
+  background: var(--text-secondary);
   border-radius: 3px;
+  transition: background-color 0.3s ease;
 }
 
 .history li {
@@ -140,14 +147,15 @@
   font-size: 14px;
   border-radius: 8px;
   position: relative;
-  transition: background 0.2s ease-in-out;
+  transition: background 0.2s ease-in-out, color 0.3s ease;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--text-primary);
 }
 
 .history li:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--hover-color);
 }
 
 .sign {
@@ -155,8 +163,9 @@
   margin: 0 10px;
   font-size: 13px;
   text-align: center;
-  border-top: solid 0.5px rgba(255, 255, 255, 0.2);
-   color: #ececec;
+  border-top: solid 0.5px var(--border-color);
+  color: var(--text-primary);
+  transition: color 0.3s ease, border-color 0.3s ease;
 }
 
 .fa-trash {
@@ -164,11 +173,11 @@
   position: absolute;
   right: 10px;
   transition: opacity 0.2s ease-in-out, color 0.2s ease-in-out;
+  color: var(--text-secondary);
 }
 
 .history li:hover .fa-trash {
   opacity: 1;
-  color: #e5e5e5;
 }
 
 .fa-trash:hover {
@@ -176,6 +185,7 @@
 }
 
 .highlighted {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--highlight-color);
   border-radius: 8px;
+  transition: background-color 0.3s ease;
 }

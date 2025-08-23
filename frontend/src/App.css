@@ -5,9 +5,63 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body[data-theme="dark"] {
+  --bg-primary: #212121;
+  --bg-secondary: #171717;
+  --bg-tertiary: #323232;
+  --text-primary: #ececec;
+  --text-secondary: #b4b4b4;
+  --border-color: rgba(255, 255, 255, 0.122);
+  --accent-color: #339cff;
+  --hover-color: rgba(255, 255, 255, 0.05);
+  --highlight-color: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --auth-bg: #242323;
+  --auth-modal-bg: rgba(26, 26, 26, 0.95);
+  --auth-title: #fff;
+  --auth-subtitle: #aaa;
+  --login-btn-bg: white;
+  --login-btn-text: black;
+  --login-btn-hover: #e5e5e5;
+  --signup-btn-bg: #2d2d2d;
+  --signup-btn-text: white;
+  --signup-btn-hover: #3a3a3a;
+  --auth-footer-text: #a0a0a0;
+}
+
+body[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e5e5e5;
+  --text-primary: #212121;
+  --text-secondary: #666666;
+  --border-color: rgba(0, 0, 0, 0.1);
+  --accent-color: #1976d2;
+  --hover-color: rgba(0, 0, 0, 0.05);
+  --highlight-color: rgba(0, 0, 0, 0.08);
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --auth-bg: #f5f5f5;
+  --auth-modal-bg: rgba(255, 255, 255, 0.95);
+  --auth-title: #000;
+  --auth-subtitle: #666;
+  --login-btn-bg: #000;
+  --login-btn-text: white;
+  --login-btn-hover: #333;
+  --signup-btn-bg: #e0e0e0;
+  --signup-btn-text: #000;
+  --signup-btn-hover: #d0d0d0;
+  --auth-footer-text: #666;
 }
 
 .app {
-  background-color: #212121;
+  background-color: var(--bg-primary);
   display: flex;
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

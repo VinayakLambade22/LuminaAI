@@ -35,16 +35,16 @@ function Sidebar() {
   const changeThread = async (newThreadId) => {
     setLoadingThread(newThreadId);
     setCurrThreadId(newThreadId);
-    
+
     try {
       const response = await makeAuthenticatedRequest(
         `http://localhost:8080/api/thread/${newThreadId}`
       );
-      
+
       if (!response.ok) {
-        throw new Error('Failed to fetch thread');
+        throw new Error("Failed to fetch thread");
       }
-      
+
       const res = await response.json();
       setPrevChats(res);
       setNewChat(false);
@@ -59,7 +59,7 @@ function Sidebar() {
 
   const deleteThread = async (threadId, e) => {
     e.stopPropagation();
-    
+
     if (!confirm("Are you sure you want to delete this chat?")) {
       return;
     }
@@ -71,7 +71,7 @@ function Sidebar() {
       );
 
       if (!response.ok) {
-        throw new Error('Failed to delete thread');
+        throw new Error("Failed to delete thread");
       }
 
       setAllThreads((prev) =>

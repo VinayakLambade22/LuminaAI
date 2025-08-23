@@ -4,6 +4,7 @@ import { MyContext } from "./MyContext.jsx";
 import { useContext, useState, useEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import { UserButton, useUser } from "@clerk/clerk-react";
+import { useTheme } from "./ThemeContext.jsx";
 
 function ChatWindow() {
   const {
@@ -17,11 +18,12 @@ function ChatWindow() {
     getAllThreads,
     makeAuthenticatedRequest,
   } = useContext(MyContext);
-  
+
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const chatContainerRef = useRef(null);
   const { user } = useUser();
+  const { isDarkMode, toggleTheme } = useTheme();
 
   const getReply = async () => {
     if (!prompt.trim()) return;
@@ -39,20 +41,19 @@ function ChatWindow() {
 
     try {
       const response = await makeAuthenticatedRequest(
-        "http://localhost:8080/api/chat", 
+        "http://localhost:8080/api/chat",
         options
       );
-      
+
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error("Failed to get response");
       }
-      
+
       const res = await response.json();
       setReply(res.reply);
       getAllThreads();
     } catch (err) {
       console.error("Error getting reply:", err);
-      // You might want to show an error message to the user here
     } finally {
       setLoading(false);
     }
@@ -89,8 +90,14 @@ function ChatWindow() {
           LuminaAI <i className="fa-solid fa-chevron-down"></i>
         </span>
         <div className="userSection">
-         
-          <UserButton 
+          <button className="themeToggle" onClick={toggleTheme}>
+            {isDarkMode ? (
+              <i className="fa-solid fa-sun"></i>
+            ) : (
+              <i className="fa-solid fa-moon"></i>
+            )}
+          </button>
+          <UserButton
             afterSignOutUrl="/"
             appearance={{
               elements: {
@@ -100,7 +107,7 @@ function ChatWindow() {
               variables: {
                 colorBackground: "#ffffff",
                 colorText: "#1a1a1a",
-              }
+              },
             }}
           />
         </div>
@@ -112,7 +119,7 @@ function ChatWindow() {
 
       {loading && (
         <div className="loaderAboveInput">
-          <ScaleLoader color="#fff" loading={true} />
+          <ScaleLoader color={isDarkMode ? "#fff" : "#000"} loading={true} />
         </div>
       )}
 
@@ -125,8 +132,8 @@ function ChatWindow() {
             onKeyDown={(e) => (e.key === "Enter" ? getReply() : "")}
             disabled={loading}
           />
-          <div 
-            id="submit" 
+          <div
+            id="submit"
             onClick={getReply}
             className={loading ? "disabled" : ""}
           >
@@ -134,7 +141,8 @@ function ChatWindow() {
           </div>
         </div>
         <p className="info">
-          LuminaAI can make mistakes. Check important info. Your chats are private to your account.
+          LuminaAI can make mistakes. Check important info. Your chats are
+          private to your account.
         </p>
       </div>
     </div>
