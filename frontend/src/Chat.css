@@ -69,3 +69,53 @@ p {
   color: var(--text-primary);
   transition: color 0.3s ease;
 }
+
+@media (max-width: 1024px) {
+  .chatContent {
+    max-width: 75%;
+    padding: 0 0.5rem;
+  }
+
+  .chatContent h1 {
+    font-size: 2rem;
+  }
+
+  .userDiv,
+  .gptDiv {
+    font-size: larger;
+  }
+}
+
+@media (max-width: 768px) {
+  .chatContent {
+    max-width: 90%;
+    padding: 0 0.3rem;
+  }
+
+  .chatContent h1 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .userDiv,
+  .gptDiv {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .userMessage {
+    padding: 8px 16px;
+  }
+
+  pre {
+    font-size: 0.7rem;
+  }
+
+  code {
+    line-height: 1.2rem;
+  }
+
+  p {
+    line-height: 1.2rem;
+  }
+}

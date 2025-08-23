@@ -17,7 +17,7 @@ function Sidebar() {
     makeAuthenticatedRequest,
   } = useContext(MyContext);
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [loadingThread, setLoadingThread] = useState(null);
 
   const toggleSidebar = () => {
