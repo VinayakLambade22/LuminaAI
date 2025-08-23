@@ -59,11 +59,7 @@ function Sidebar() {
   };
 
   const deleteThread = async (threadId, e) => {
-    e.stopPropagation();
-
-    if (!confirm("Are you sure you want to delete this chat?")) {
-      return;
-    }
+    e.stopPropagation(); // now e will be passed correctly
 
     try {
       const response = await makeAuthenticatedRequest(
@@ -132,10 +128,7 @@ function Sidebar() {
                   : thread.title}
                 <i
                   className="fa-solid fa-trash"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteThread(thread.threadId);
-                  }}
+                  onClick={(e) => deleteThread(thread.threadId, e)}
                 ></i>
               </li>
             ))}
