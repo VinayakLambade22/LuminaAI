@@ -6,7 +6,6 @@ import {
 } from "@clerk/clerk-react";
 import { useState } from "react";
 import "./AuthPage.css";
-import logo from "./assets/blacklogo.png";
 
 function AuthPage() {
   const [open, setOpen] = useState(true);
@@ -17,7 +16,12 @@ function AuthPage() {
         {open && (
           <div className="authOverlay">
             <div className="authModal">
-              <img src={logo} alt="LuminaAI Logo" className="authLogo" />
+              <img
+                src="/blacklogo.png"
+                alt="LuminaAI Logo"
+                className="authLogo"
+              />
+
               <h1 className="authTitle">Welcome to LuminaAI</h1>
               <p className="authSubtitle">
                 Sign in or sign up to access your personalized AI assistant
@@ -40,8 +44,7 @@ function AuthPage() {
         )}
       </SignedOut>
 
-      <SignedIn>
-      </SignedIn>
+      <SignedIn></SignedIn>
     </>
   );
 }

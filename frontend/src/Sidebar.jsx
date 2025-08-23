@@ -93,7 +93,7 @@ function Sidebar() {
   return (
     <section className={`sidebar ${isOpen ? "" : "collapsed"}`}>
       <div className="logoDiv">
-        <img src="src/assets/blacklogo.png" alt="gpt logo" className="logo" />
+        <img src="/blacklogo.png" alt="gpt logo" className="logo" />
         <span className="logoSidebar" onClick={toggleSidebar}>
           <svg
             className="bi bi-layout-sidebar"
