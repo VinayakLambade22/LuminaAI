@@ -5,6 +5,7 @@ import { useContext, useState, useEffect, useRef } from "react";
 import { ScaleLoader } from "react-spinners";
 import { UserButton, useUser } from "@clerk/clerk-react";
 import { useTheme } from "./ThemeContext.jsx";
+import { API_BASE_URL } from "./config.js";
 
 function ChatWindow() {
   const {
@@ -41,7 +42,7 @@ function ChatWindow() {
 
     try {
       const response = await makeAuthenticatedRequest(
-        "http://localhost:8080/api/chat",
+        `${API_BASE_URL}/chat`,
         options
       );
 

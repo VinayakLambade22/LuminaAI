@@ -2,6 +2,7 @@ import "./Sidebar.css";
 import { useContext, useState } from "react";
 import { MyContext } from "./MyContext.jsx";
 import { v1 as uuidv1 } from "uuid";
+import { API_BASE_URL } from "./config.js";
 
 function Sidebar() {
   const {
@@ -38,7 +39,7 @@ function Sidebar() {
 
     try {
       const response = await makeAuthenticatedRequest(
-        `http://localhost:8080/api/thread/${newThreadId}`
+        `${API_BASE_URL}/thread/${newThreadId}`
       );
 
       if (!response.ok) {
@@ -66,7 +67,7 @@ function Sidebar() {
 
     try {
       const response = await makeAuthenticatedRequest(
-        `http://localhost:8080/api/thread/${threadId}`,
+        `${API_BASE_URL}/thread/${threadId}`,
         { method: "DELETE" }
       );
 

@@ -7,6 +7,7 @@ import { v1 as uuidv1 } from "uuid";
 import { SignedIn, SignedOut, useAuth } from "@clerk/clerk-react";
 import AuthPage from "./AuthPage.jsx";
 import { ThemeProvider } from "./ThemeContext.jsx";
+import { API_BASE_URL } from "./config.js";
 
 function App() {
   const [prompt, setPrompt] = useState("");
@@ -33,9 +34,7 @@ function App() {
     if (!isSignedIn) return;
 
     try {
-      const response = await makeAuthenticatedRequest(
-        "http://localhost:8080/api/thread"
-      );
+      const response = await makeAuthenticatedRequest(`${API_BASE_URL}/thread`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch threads");
