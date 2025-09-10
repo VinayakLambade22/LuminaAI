@@ -47,14 +47,21 @@ function ChatWindow() {
       );
 
       if (!response.ok) {
+        setReply("Sorry, I couldn't process your request.");
         throw new Error("Failed to get response");
       }
 
       const res = await response.json();
-      setReply(res.reply);
+      setReply(res.reply || "Sorry, I couldn't process your request.");
       getAllThreads();
     } catch (err) {
       console.error("Error getting reply:", err);
+
+      if (err.message.includes("ERR_CONNECTION_REFUSED")) {
+        setReply("Sorry, I couldn't process your request.");
+      } else {
+        setReply("Sorry, I couldn't process your request.");
+      }
     } finally {
       setLoading(false);
     }
