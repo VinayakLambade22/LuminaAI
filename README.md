@@ -45,7 +45,7 @@ Before running this application, make sure you have:
 ### 1. Clone the repository
 ```bash
 git clone <repository-url>
-cd Chatgpt
+cd LuminaAI
 ```
 
 ### 2. Install Backend Dependencies
@@ -114,7 +114,7 @@ Make sure to configure your Clerk publishable key in the frontend configuration 
 ## 📁 Project Structure
 
 ```
-Chatgpt/
+LuminaAI/
 ├── backend/
 │   ├── server.js              # Express server setup
 │   ├── routes/
