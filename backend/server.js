@@ -9,7 +9,21 @@ const app = express();
 const PORT = 8080;
 
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = [process.env.LOCAL_ORIGIN, process.env.PROD_ORIGIN];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 if (!process.env.CLERK_SECRET_KEY) {
   throw new Error("CLERK_SECRET_KEY is not set in environment variables");
@@ -18,19 +32,18 @@ if (!process.env.CLERK_SECRET_KEY) {
 app.use("/api", ClerkExpressWithAuth(), chatRoutes);
 
 app.listen(PORT, () => {
-    console.log(`server running on ${PORT}`);
-    connectDB();
+  console.log(`server running on ${PORT}`);
+  connectDB();
 });
 
-const connectDB = async() => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URI);
-        console.log("Connected with Database!");
-    } catch(err) {
-        console.log("Failed to connect with Db", err);
-    }
-}
-
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("Connected with Database!");
+  } catch (err) {
+    console.log("Failed to connect with Db", err);
+  }
+};
 
 // app.post("/test", async (req, res) => {
 //     const options = {
@@ -57,4 +70,3 @@ const connectDB = async() => {
 //         console.log(err);
 //     }
 // });
-
