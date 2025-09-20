@@ -1,5 +1,5 @@
 import "./Chat.css";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
@@ -8,6 +8,7 @@ import "highlight.js/styles/github-dark.css";
 function Chat() {
   const { newChat, prevChats, reply } = useContext(MyContext);
   const [latestReply, setLatestReply] = useState(null);
+  const chatEndRef = useRef(null);
 
   useEffect(() => {
     if (reply === null) {
@@ -22,6 +23,9 @@ function Chat() {
     const interval = setInterval(() => {
       setLatestReply(content.slice(0, idx + 1).join(" "));
       idx++;
+
+      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+
       if (idx >= content.length) clearInterval(interval);
     }, 40);
 
@@ -64,6 +68,8 @@ function Chat() {
             )}
           </>
         )}
+
+        <div ref={chatEndRef}></div>
       </div>
     </div>
   );
