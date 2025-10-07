@@ -56,22 +56,6 @@
   transform: scale(1.1);
 }
 
-.userIconDiv {
-  margin: 0 2rem;
-}
-
-.userIcon {
-  background-color: var(--accent-color);
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
 .chatContainer {
   flex: 1;
   width: 100%;
@@ -80,6 +64,30 @@
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease;
+}
+
+.stop-generating-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.stop-generating-button {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.stop-generating-button:hover {
+  background-color: var(--hover-color);
 }
 
 .loaderAboveInput {
@@ -114,7 +122,7 @@ input {
   border: none;
   background-color: var(--input-bg);
   color: var(--text-primary);
-  padding: 20px;
+  padding: 20px 60px;
   font-size: 0.8rem;
   border-radius: 14px;
   box-shadow: rgba(0, 0, 0, 0.05) 0 54px 55px, rgba(0, 0, 0, 0.05) 0 -12px 30px,
@@ -125,6 +133,47 @@ input {
 
 input:focus {
   outline: none;
+}
+
+.mic-button {
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  font-size: 18px;
+  position: absolute;
+  left: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  transition: color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mic-button:hover {
+  color: var(--text-primary);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px 15px rgba(231, 76, 60, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+  }
+}
+
+.mic-button.listening {
+  color: #e74c3c;
+  animation: pulse 1.5s infinite;
 }
 
 #submit {
@@ -158,34 +207,6 @@ input:focus {
   transition: color 0.3s ease;
 }
 
-.dropDown {
-  position: absolute;
-  top: 4.5rem;
-  right: 2rem;
-  width: 150px;
-  background-color: var(--bg-tertiary);
-  padding: 0.3rem 0.5rem;
-  border-radius: 6px;
-  text-align: left;
-  z-index: 1000;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease;
-}
-
-.dropDownItem {
-  font-size: 0.9rem;
-  margin: 0.3rem 0;
-  padding: 0.5rem 0.2rem;
-  cursor: pointer;
-  color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.dropDownItem:hover {
-  background-color: var(--hover-color);
-  border-radius: 6px;
-}
-
 .chatContainer::-webkit-scrollbar {
   width: 6px;
 }
@@ -200,72 +221,13 @@ input:focus {
   background-color: transparent;
 }
 
-@media (max-width: 1024px) {
-  .navbar {
-    padding: 0.8rem 0;
-    height: 50px;
-  }
-
-  .navbar span {
-    margin: 0 1.5rem;
-    font-size: larger;
-  }
-
-  .userSection {
-    margin: 0 1.5rem;
-  }
-
-  .themeToggle {
-    font-size: 1.5rem;
-  }
-
-  .inputBox {
-    max-width: 75%;
-  }
-}
-
 @media (max-width: 768px) {
-  .navbar {
-    padding: 0.6rem 0;
-  }
-
-  .navbar span {
-    margin: 0 1rem;
-    font-size: 0.9rem;
-  }
-
-  .userSection {
-    margin: 0 1rem;
-    gap: 10px;
-  }
-
-  .themeToggle {
-    font-size: 1rem;
-  }
-
   .inputBox {
     max-width: 95%;
-    margin-bottom: 0.3rem;
   }
-
-  input {
-    padding: 15px;
-    font-size: 0.7rem;
-  }
-
-  #submit {
-    height: 30px;
-    width: 30px;
-    font-size: 16px;
-    right: 10px;
-  }
-
-  .info {
-    font-size: 0.7rem;
-    padding: 0 0.5rem;
-  }
-
-  .loaderAboveInput {
-    padding: 0.3rem 0;
+  
+  .stop-generating-button {
+    font-size: 0.8rem;
+    padding: 6px 12px;
   }
 }

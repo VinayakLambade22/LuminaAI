@@ -6,37 +6,55 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 
 function Chat() {
-  const { newChat, prevChats, reply } = useContext(MyContext);
-  const [latestReply, setLatestReply] = useState(null);
+  const { newChat, prevChats, reply, setReply, setPrevChats } = useContext(MyContext);
+  const [typingReply, setTypingReply] = useState("");
   const chatEndRef = useRef(null);
+  
+  const typingReplyRef = useRef(typingReply);
+  useEffect(() => {
+    typingReplyRef.current = typingReply;
+  }, [typingReply]);
 
   useEffect(() => {
-    if (reply === null) {
-      setLatestReply(null);
-      return;
+    let interval;
+    if (reply) {
+      setTypingReply(""); 
+      const words = reply.split(" ");
+      let idx = 0;
+      interval = setInterval(() => {
+        if (idx < words.length) {
+          setTypingReply((prev) => prev + (prev ? " " : "") + words[idx]);
+          idx++;
+        } else {
+          clearInterval(interval);
+          setReply(null); 
+        }
+      }, 40);
     }
 
-    if (!prevChats?.length) return;
+    return () => {
+      clearInterval(interval);
+      if (reply && typingReplyRef.current.length > 0 && typingReplyRef.current.length < reply.length) {
+        setPrevChats(prev => {
+          const updatedChats = [...prev];
+          if (updatedChats.length > 0) {
+            updatedChats[updatedChats.length - 1].content = typingReplyRef.current;
+          }
+          return updatedChats;
+        });
+      }
+    };
+  }, [reply, setReply, setPrevChats]);
 
-    const content = reply.split(" ");
-    let idx = 0;
-    const interval = setInterval(() => {
-      setLatestReply(content.slice(0, idx + 1).join(" "));
-      idx++;
-
-      chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-
-      if (idx >= content.length) clearInterval(interval);
-    }, 40);
-
-    return () => clearInterval(interval);
-  }, [prevChats, reply]);
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [prevChats, typingReply]);
 
   return (
     <div className="chatContent">
       {newChat && <h1>What's on your mind today?</h1>}
       <div className="chats">
-        {prevChats?.slice(0, -1).map((chat, idx) => (
+        {(reply ? prevChats.slice(0, -1) : prevChats).map((chat, idx) => (
           <div
             className={chat.role === "user" ? "userDiv" : "gptDiv"}
             key={idx}
@@ -51,22 +69,12 @@ function Chat() {
           </div>
         ))}
 
-        {prevChats.length > 0 && (
-          <>
-            {latestReply === null ? (
-              <div className="gptDiv" key={"non-typing"}>
-                <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                  {prevChats[prevChats.length - 1].content}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              <div className="gptDiv" key={"typing"}>
-                <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
-                  {latestReply}
-                </ReactMarkdown>
-              </div>
-            )}
-          </>
+        {reply && (
+          <div className="gptDiv">
+            <ReactMarkdown rehypePlugins={[rehypeHighlight]}>
+              {typingReply}
+            </ReactMarkdown>
+          </div>
         )}
 
         <div ref={chatEndRef}></div>
