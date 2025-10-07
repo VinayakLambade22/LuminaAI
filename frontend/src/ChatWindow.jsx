@@ -108,13 +108,6 @@ function ChatWindow() {
   };
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
-  }, [reply, loading]);
-
-  useEffect(() => {
     if (reply) {
       setPrevChats((prevChats) => [
         ...prevChats,
@@ -157,7 +150,7 @@ function ChatWindow() {
       </div>
 
       <div className="chatContainer" ref={chatContainerRef}>
-        <Chat />
+        <Chat chatContainerRef={chatContainerRef} />
       </div>
 
       {!loading && reply && (

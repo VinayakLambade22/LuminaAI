@@ -1,15 +1,21 @@
 import "./Chat.css";
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+} from "react";
 import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 
-function Chat() {
-  const { newChat, prevChats, reply, setReply, setPrevChats } = useContext(MyContext);
+function Chat({ chatContainerRef }) {
+  const { newChat, prevChats, reply, setReply, setPrevChats } =
+    useContext(MyContext);
   const [typingReply, setTypingReply] = useState("");
-  const chatEndRef = useRef(null);
-  
+
   const typingReplyRef = useRef(typingReply);
   useEffect(() => {
     typingReplyRef.current = typingReply;
@@ -18,7 +24,7 @@ function Chat() {
   useEffect(() => {
     let interval;
     if (reply) {
-      setTypingReply(""); 
+      setTypingReply("");
       const words = reply.split(" ");
       let idx = 0;
       interval = setInterval(() => {
@@ -27,18 +33,23 @@ function Chat() {
           idx++;
         } else {
           clearInterval(interval);
-          setReply(null); 
+          setReply(null);
         }
       }, 40);
     }
 
     return () => {
       clearInterval(interval);
-      if (reply && typingReplyRef.current.length > 0 && typingReplyRef.current.length < reply.length) {
-        setPrevChats(prev => {
+      if (
+        reply &&
+        typingReplyRef.current.length > 0 &&
+        typingReplyRef.current.length < reply.length
+      ) {
+        setPrevChats((prev) => {
           const updatedChats = [...prev];
           if (updatedChats.length > 0) {
-            updatedChats[updatedChats.length - 1].content = typingReplyRef.current;
+            updatedChats[updatedChats.length - 1].content =
+              typingReplyRef.current;
           }
           return updatedChats;
         });
@@ -46,8 +57,21 @@ function Chat() {
     };
   }, [reply, setReply, setPrevChats]);
 
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  useLayoutEffect(() => {
+    const chatContainer = chatContainerRef.current;
+    if (!chatContainer) return;
+
+    const scrollThreshold = 100;
+
+    const isScrolledToBottom =
+      chatContainer.scrollHeight -
+        chatContainer.scrollTop -
+        chatContainer.clientHeight <=
+      scrollThreshold;
+
+    if (isScrolledToBottom) {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
   }, [prevChats, typingReply]);
 
   return (
@@ -76,8 +100,6 @@ function Chat() {
             </ReactMarkdown>
           </div>
         )}
-
-        <div ref={chatEndRef}></div>
       </div>
     </div>
   );
